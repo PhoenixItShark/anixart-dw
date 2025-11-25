@@ -1,0 +1,33 @@
+@use '../../../shared/styles/utils/variables' as *;
+@use '../../../shared/styles/utils/media_breakpoint' as *;
+
+@include desktop() {
+    .search_input_container {
+        display: flex;
+        align-items: center;
+        height: 40px;
+        width: 40%;
+    }
+    .search_input_wrapper {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 40px 0 0 40px;
+        background-color: $color-light-grey;
+    }
+    .search_icon {
+        
+    }
+    .search_input {
+        
+        height: 100%;
+        width: 100%;
+        padding: 10px;
+        border-radius: 0 40px 40px 0;
+        border: none;
+        outline: none;
+        color: $color-primary-2;
+        background-color: $color-light-grey;
+    } 
+}

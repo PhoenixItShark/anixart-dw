@@ -1,0 +1,38 @@
+
+
+$breakpoint_mobile: 120px; //min
+$breakpoint_tablet: 768px; //min
+$breakpoint_desktop: 1024px; //min
+
+:root {
+  // Основные цвета
+  --color-pages: #E5E5E5;
+  --color-grey: #F5F7FA;
+  --color-light-grey: #252525;
+  --color-dark-blue-start: #1e3a8a;
+  --color-primary-1: #FEAA09;
+  --color-primary-2: #757575;
+  --color-primary-3: #2D60FF;
+  --color-secondary-1: #FE5C73;
+  --color-dark-grey: #121212;
+  --color-dark-light-grey: #1b1b1b;
+  // Для градиентов
+  --gradient-primary: linear-gradient(135deg, #1e3a8a, #2D60FF);
+
+  // Брейкпоинты (для JS)
+  --bp-mobile: #{$breakpoint-mobile};
+  --bp-tablet: #{$breakpoint-tablet};
+  --bp-desktop: #{$breakpoint-desktop};
+}
+
+// SCSS-переменные (дублируем для SCSS)
+$color-pages: var(--color-pages);
+$color-grey: var(--color-grey);
+$color-light-grey: var(--color-light-grey);
+$color-dark-blue-start: var(--color-dark-blue-start);
+$color-primary-1: var(--color-primary-1);
+$color-primary-2: var(--color-primary-2);
+$color-primary-3: var(--color-primary-3);
+$color-secondary-1: var(--color-secondary-1);
+$color-dark-grey: var(--color-dark-grey);
+$color-dark-light-grey: var(--color-dark-light-grey);

@@ -1,0 +1,50 @@
+// Переменные
+:root {
+  --font-main: 'Inter', sans-serif;
+  --color-primary: #007bff;
+}
+
+// Базовые стили
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #fff;
+  color: #000;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+// Убираем дефолтные стили для input
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+// Ссылки
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+li,
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+}

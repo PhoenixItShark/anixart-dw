@@ -1,0 +1,10 @@
+@use '../utils/variables' as *;
+
+.input_container {
+    position: relative;
+}
+
+.input {
+    background-color: $color_grey;
+}
+
