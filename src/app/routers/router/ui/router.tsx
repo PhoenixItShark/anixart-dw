@@ -1,5 +1,5 @@
 // src/app/router.tsx
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "../../ProtectedRoute.tsx/ui/ProtectedRoute";
 import Home from "@/pages/Home/ui/Home";
 import Auth from "@/pages/Auth/ui/Auth";
