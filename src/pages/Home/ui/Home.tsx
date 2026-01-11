@@ -1,10 +1,10 @@
-import Cards from '@/entities/AnimeList/ui/Cards'
-import styles from '../styles/home.desktop.module.scss'
+import { DEFAULT_FILTERS } from "@entities/anime/const"
+import { AnimeList } from "@widgets/Anime/AnimeList"
 
-const Home = () => {
+const Home = () => { 
   return (
-    <section className={styles.home_container}>
-      <Cards />
+    <section className='' >
+      <AnimeList filters={DEFAULT_FILTERS}/>
     </section>
   )
 }

@@ -1,8 +1,0 @@
-@use '../../../shared/styles/utils/variables' as *;
-@use '../../../shared/styles/utils/media_breakpoint' as *;
-
-@include desktop() {
-        .notification_icon {
-        filter: invert(1);
-    }
-}

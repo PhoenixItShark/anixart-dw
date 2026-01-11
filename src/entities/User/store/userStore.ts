@@ -1,6 +1,7 @@
 // src/entities/user/model/userStore.ts
 
-import { AnimeFilterParams } from '@/entities/AnimeList/types';
+
+import { AnimeFilter } from '@entities/anime/types';
 import { create } from 'zustand';
 import { devtools, persist, createJSONStorage } from 'zustand/middleware';
 
@@ -9,7 +10,7 @@ interface UserState {
   token: string | null;
   id: number | null;
   username: string | null;
-  filter: AnimeFilterParams | null;
+  filter: AnimeFilter | null;
   avatar: string | null;
   isAuthenticated: boolean;
 
@@ -20,7 +21,7 @@ interface UserState {
     username: string;
     avatar?: string;
   }) => void;
-  setFilter: (filter: AnimeFilterParams) => void;
+  setFilter: (filter: AnimeFilter) => void;
   logout: () => void;
   updateAvatar: (avatar: string) => void;
   updateUsername: (username: string) => void;

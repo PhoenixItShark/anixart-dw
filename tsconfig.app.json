@@ -23,7 +23,7 @@
     // FSD алиасы
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"],
+      "@/*": ["./src/*"],
       "@app/*": ["app/*"],
       "@pages/*": ["pages/*"],
       "@widgets/*": ["widgets/*"],
@@ -34,7 +34,7 @@
   },
   "include": [
     "src",
-    "./@types/vite-env.d.ts",
-    "./@types/module.d.ts"
+    "@decorators/vite-env.d.ts",
+    "@decorators/module.d.ts"
   ]
 }
