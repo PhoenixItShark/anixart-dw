@@ -10,7 +10,7 @@ import { Completed } from "@pages/AnimeList/Completed";
 import { Movies } from "@pages/AnimeList/Movies";
 import { Auth } from "@pages/Auth";
 import NotFound from "../ui/NotFound";
-import RootLayout from "@app/layouts/RootLayout/RootLayout";
+import RootLayout from "@app/layouts/RootLayout";
 
 const router = createBrowserRouter([
   {

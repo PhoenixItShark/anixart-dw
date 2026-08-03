@@ -1,1 +1,3 @@
-export {default as Avatar} from '../../features/SideTopBar/ui/Avatar'
+export { useUserStore } from './store/userStore'
+export type { UserProfile, ProfileToken, AuthResponse, RegisterResponse } from './types'
+export { AuthCode } from './types'

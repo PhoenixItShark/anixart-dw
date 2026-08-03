@@ -67,7 +67,7 @@ export const useUserStore = create<UserState>()(
           username: state.username,
           avatar: state.avatar,
           isAuthenticated: state.isAuthenticated,
-          // token: state.token, // ← раскомментируй, если хочешь сохранять и токен
+          token: state.token,
         }),
       }
     ),
