@@ -31,7 +31,7 @@ export interface AnimeItem {
   director: string | null;
   dropped_count: number;
   duration: number;
-  episode_last_update: number | null;
+  episode_last_update: EpisodeLastUpdate | null;
   episodes_released: number;
   episodes_total: number | null;
   favorites_count: number;
@@ -49,21 +49,21 @@ export interface AnimeItem {
   is_view_blocked: boolean;
   is_viewed: boolean;
   last_update_date: number;
-  last_view_episode: number | null;
+  last_view_episode: ReleaseEpisode | null;
   last_view_timestamp: number;
   note: string | null;
   plan_count: number;
   poster: string;
-  profile_list_status: unknown | null;
+  profile_list_status: number | null;
   profile_release_type_notification_preference_count: number;
   rating: number;
-  recommended_releases: unknown[];
-  related: unknown | null;
+  recommended_releases: AnimeItem[];
+  related: AnimeRelated | null;
   related_count: number;
-  related_releases: unknown[];
+  related_releases: AnimeItem[];
   release_date: string;
-  screenshot_images: unknown[];
-  screenshots: unknown[];
+  screenshot_images: string[];
+  screenshots: string[];
   season: number;
   source: string | null;
   status: AnimeStatus;
@@ -73,7 +73,7 @@ export interface AnimeItem {
   title_original: string;
   title_ru: string;
   translators: string;
-  video_banners: unknown[];
+  video_banners: VideoBanner[];
   vote_1_count: number;
   vote_2_count: number;
   vote_3_count: number;
@@ -83,6 +83,46 @@ export interface AnimeItem {
   watching_count: number;
   year: string;
   your_vote: number;
+}
+
+export interface AnimeRelated {
+  description: string;
+  id: number;
+  image: string;
+  images: string[];
+  name: string;
+  name_ru: string;
+  release_count: number;
+}
+
+export interface ReleaseEpisode {
+  '@id': number;
+  position: number;
+  release: number;
+  source: number;
+  name: string;
+  url: string;
+  iframe: boolean;
+  addedDate: number;
+  is_filter: boolean;
+  is_watched: boolean;
+}
+
+export interface EpisodeLastUpdate {
+  lastEpisodeTypeUpdateName: string;
+  last_episode_source_update_id: number;
+  last_episode_source_update_name: string;
+  last_episode_type_update_id: number;
+  last_episode_update_date: number;
+  last_episode_update_name: string;
+}
+
+export interface VideoBanner {
+  name: string;
+  image: string;
+  value: string;
+  action_id: number;
+  is_new: boolean;
 }
 
 export interface AnimePageResponse {
