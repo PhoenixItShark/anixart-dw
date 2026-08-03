@@ -1,8 +1,11 @@
+import { LoginForm } from "@features/Auth";
 
 const Auth = () => {
   return (
-    <div>Auth</div>
-  )
-}
+    <section className="h-full flex items-center justify-center">
+      <LoginForm />
+    </section>
+  );
+};
 
-export default Auth
+export default Auth;

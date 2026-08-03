@@ -1,9 +1,0 @@
-@use '../../../shared/styles/utils/variables' as *;
-@use '../../../shared/styles/utils/media_breakpoint' as *;
-
-@include desktop() {
-   .user_avatar {
-        object-fit: cover;
-        border-radius: 999px;
-    }
-}
