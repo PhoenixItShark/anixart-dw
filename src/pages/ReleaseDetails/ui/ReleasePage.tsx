@@ -5,6 +5,8 @@ import {
   ReleaseEpisodes,
   ReleaseScreenshots,
   ReleaseRelated,
+  ReleaseSimilar,
+  ReleaseComments,
 } from "@widgets/Anime/Release";
 import { Navigate, useParams } from "react-router-dom";
 import { useGetRelease } from "@entities/anime/model";
@@ -38,7 +40,7 @@ const ReleasePage = () => {
   const anime = data.release;
 
   return (
-    <section className="flex flex-col gap-6">
+    <section className="flex flex-col gap-8">
       <ReleaseHero anime={anime} />
 
       <div className="flex gap-6 items-start">
@@ -47,9 +49,12 @@ const ReleasePage = () => {
           <ReleaseEpisodes anime={anime} />
           <ReleaseScreenshots anime={anime} />
           <ReleaseRelated anime={anime} />
+          <ReleaseSimilar anime={anime} />
         </div>
         <ReleaseInfoCard anime={anime} />
       </div>
+
+      <ReleaseComments releaseId={id} />
     </section>
   );
 };

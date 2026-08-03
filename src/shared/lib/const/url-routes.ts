@@ -7,5 +7,10 @@ export const API_URLS = {
     collections: "/collections",
     profile: "/profile",
     filters: "/filter",
-    release: "/release"
+    release: "/release",
+    favorite: "/favorite",
+    vote: "/release/vote",
+    profileList: "/profile/list",
+    comment: "/release/comment",
+    related: "/related"
 }

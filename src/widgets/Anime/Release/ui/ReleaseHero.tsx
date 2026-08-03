@@ -1,14 +1,49 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  CalendarDays,
+  Check,
+  Clock3,
+  Flame,
+  Heart,
+  Play,
+  Share2,
+} from "lucide-react";
 import { AnimeItem } from "@entities/anime/types";
+import { useToggleFavorite } from "@entities/anime/model";
+import { useUserStore } from "@entities/User";
+import { cn, formatDate } from "@shared/lib/utils";
 import formatAgeRating from "../lib/utils/formatAgeRating";
-import { formatDate } from "@shared/lib/utils";
-import { CalendarDays, Clock3, Flame, Play, Share2, Star } from "lucide-react";
+import ReleaseVote from "./ReleaseVote";
+import ReleaseStatusSelect from "./ReleaseStatusSelect";
 
 const ReleaseHero = ({ anime }: { anime: AnimeItem }) => {
+  const isAuthenticated = useUserStore((s) => s.isAuthenticated);
+  const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
+
   const backdrop = anime.screenshot_images[0] || anime.image;
+  const favoriteMutation = useToggleFavorite(String(anime.id), anime.is_favorite);
+
+  const requireAuth = () => navigate("/auth");
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const voteCounts: [number, number, number, number, number] = [
+    anime.vote_1_count,
+    anime.vote_2_count,
+    anime.vote_3_count,
+    anime.vote_4_count,
+    anime.vote_5_count,
+  ];
 
   return (
-    <section className="relative overflow-hidden rounded-xl border border-text-primary/20">
-      <div className="absolute inset-0">
+    <section className="relative rounded-xl">
+      <div className="absolute inset-0 overflow-hidden rounded-xl">
         <img
           src={backdrop}
           alt=""
@@ -65,32 +100,73 @@ const ReleaseHero = ({ anime }: { anime: AnimeItem }) => {
             ) : null}
           </div>
 
-          <div className="flex items-center gap-6 mt-2">
-            <div className="flex items-center gap-2">
-              <Star className="text-red fill-red" width={28} height={28} />
-              <div className="flex flex-col">
-                <span className="text-2xl font-bold text-text-secondary leading-none">
-                  {anime.grade ? anime.grade.toFixed(1) : "—"}
-                </span>
-                <span className="text-text-primary text-xs">
-                  {anime.vote_count} {anime.vote_count === 1 ? "голос" : anime.vote_count < 5 ? "голоса" : "голосов"}
-                </span>
-              </div>
-            </div>
+          <div className="flex items-center gap-6 mt-2 flex-wrap">
+            <ReleaseVote
+              releaseId={String(anime.id)}
+              grade={anime.grade}
+              voteCount={anime.vote_count}
+              yourVote={anime.your_vote}
+              voteCounts={voteCounts}
+              isAuthenticated={isAuthenticated}
+              onRequireAuth={requireAuth}
+            />
+          </div>
 
-            <div className="flex items-center gap-2">
-              <button
-                disabled={anime.is_play_disabled}
-                className="flex items-center gap-2 bg-red text-white font-bold py-2.5 px-6 rounded-lg hover:opacity-90 active:scale-[0.98] transition disabled:opacity-40 disabled:cursor-not-allowed"
-                title="Плеер в разработке"
-              >
-                <Play width={20} height={20} fill="currentColor" />
-                Смотреть
-              </button>
-              <button className="p-2.5 bg-color-primary/80 border border-text-primary/20 rounded-lg text-text-secondary hover:text-red hover:border-red/40 transition">
+          <div className="flex items-center gap-2.5 mt-2">
+            <button
+              disabled={anime.is_play_disabled}
+              className="flex items-center gap-2 bg-red text-white font-bold py-2.5 px-6 rounded-lg hover:opacity-90 active:scale-[0.98] transition disabled:opacity-40 disabled:cursor-not-allowed"
+              title="Плеер в разработке"
+            >
+              <Play width={20} height={20} fill="currentColor" />
+              Смотреть
+            </button>
+
+            <ReleaseStatusSelect
+              releaseId={String(anime.id)}
+              currentStatus={anime.profile_list_status}
+              isAuthenticated={isAuthenticated}
+              onRequireAuth={requireAuth}
+            />
+
+            <button
+              onClick={() => {
+                if (!isAuthenticated) {
+                  requireAuth();
+                  return;
+                }
+                favoriteMutation.mutate();
+              }}
+              disabled={favoriteMutation.isPending}
+              className={cn(
+                "flex items-center gap-2 py-2.5 px-4 rounded-lg border text-sm font-semibold transition active:scale-[0.98] disabled:opacity-50",
+                anime.is_favorite
+                  ? "bg-red/15 border-red/50 text-red hover:bg-red/25"
+                  : "bg-color-primary/80 border-text-primary/20 text-text-secondary hover:border-red/40 hover:text-red"
+              )}
+              title={
+                anime.is_favorite ? "Убрать из избранного" : "Добавить в избранное"
+              }
+            >
+              {anime.is_favorite ? (
+                <Heart width={18} height={18} fill="currentColor" />
+              ) : (
+                <Heart width={18} height={18} />
+              )}
+              {anime.is_favorite ? "В избранном" : "В избранное"}
+            </button>
+
+            <button
+              onClick={handleShare}
+              className="p-2.5 bg-color-primary/80 border border-text-primary/20 rounded-lg text-text-secondary hover:text-red hover:border-red/40 transition"
+              title="Скопировать ссылку"
+            >
+              {copied ? (
+                <Check width={20} height={20} className="text-green-500" />
+              ) : (
                 <Share2 width={20} height={20} />
-              </button>
-            </div>
+              )}
+            </button>
           </div>
         </div>
       </div>

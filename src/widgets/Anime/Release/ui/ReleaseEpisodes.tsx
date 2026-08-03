@@ -7,9 +7,11 @@ const ReleaseEpisodes = ({ anime }: { anime: AnimeItem }) => {
 
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="text-xl font-bold text-text-secondary">Серии</h2>
+      <h2 className="text-xl font-bold text-text-secondary border-l-[3px] border-red pl-3">
+        Серии
+      </h2>
 
-      <div className="flex items-center gap-4 bg-color-primary rounded-xl border border-text-primary/20 p-5">
+      <div className="flex items-center gap-4 bg-color-primary rounded-xl border border-text-primary/30 p-5">
         <div className="flex items-center gap-3">
           <Clapperboard className="text-red" width={32} height={32} />
           <div className="flex flex-col">

@@ -1,4 +1,5 @@
 import { AnimeItem } from "@entities/anime/types";
+import { PROFILE_LISTS } from "@entities/anime/const";
 import { formatDate } from "@shared/lib/utils";
 import ReactCountryFlag from "react-country-flag";
 import {
@@ -49,8 +50,22 @@ const CountStat = ({ value, label }: { value: number; label: string }) => (
 const ReleaseInfoCard = ({ anime }: { anime: AnimeItem }) => {
   const flag = COUNTRY_FLAGS[anime.country] || null;
 
+  const listCounts = [
+    anime.watching_count,
+    anime.plan_count,
+    anime.completed_count,
+    anime.hold_on_count,
+    anime.dropped_count,
+  ];
+  const totalListCount = listCounts.reduce((sum, n) => sum + n, 0);
+  const listSegments = PROFILE_LISTS.map((option, i) => ({
+    option,
+    count: listCounts[i],
+    percent: totalListCount ? (listCounts[i] / totalListCount) * 100 : 0,
+  }));
+
   return (
-    <aside className="flex flex-col gap-6 bg-color-primary rounded-xl border border-text-primary/20 p-5 sticky top-4">
+    <aside className="flex flex-col gap-6 bg-color-primary rounded-xl border border-text-primary/30 p-5 sticky top-4">
       <div className="flex flex-col gap-4">
         <InfoRow
           icon={<BookOpen width={18} height={18} />}
@@ -109,6 +124,45 @@ const ReleaseInfoCard = ({ anime }: { anime: AnimeItem }) => {
             >
               {genre.trim()}
             </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2.5 border-t border-text-primary/15 pt-5">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-text-primary">В списках у людей</span>
+          <span className="text-xs text-text-primary">
+            {totalListCount.toLocaleString("ru-RU")}
+          </span>
+        </div>
+
+        <div className="flex h-2.5 rounded-full overflow-hidden bg-background-primary">
+          {listSegments.map((segment) =>
+            segment.percent > 0 ? (
+              <div
+                key={segment.option.id}
+                className={segment.option.color}
+                style={{ width: `${segment.percent}%` }}
+                title={`${segment.option.label}: ${segment.count}`}
+              />
+            ) : null
+          )}
+        </div>
+
+        <div className="flex flex-col gap-1.5 mt-0.5">
+          {listSegments.map((segment) => (
+            <div
+              key={segment.option.id}
+              className="flex items-center gap-2 text-xs"
+            >
+              <span
+                className={`w-2 h-2 rounded-full shrink-0 ${segment.option.color}`}
+              />
+              <span className="text-text-primary flex-1">{segment.option.label}</span>
+              <span className="text-text-secondary font-semibold">
+                {segment.count}
+              </span>
+            </div>
           ))}
         </div>
       </div>

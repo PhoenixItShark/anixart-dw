@@ -54,7 +54,7 @@ export interface AnimeItem {
   note: string | null;
   plan_count: number;
   poster: string;
-  profile_list_status: number | null;
+  profile_list_status: ProfileListStatus | null;
   profile_release_type_notification_preference_count: number;
   rating: number;
   recommended_releases: AnimeItem[];
@@ -136,4 +136,53 @@ export interface AnimePageResponse {
 export interface AnimeReleaseResponse {
   code: number;
   release: AnimeItem;
+}
+
+export type ProfileListStatus = 0 | 1 | 2 | 3 | 4 | 5;
+
+export enum CommentSort {
+  Newest = 1,
+  Oldest = 2,
+  Popular = 3,
+}
+
+export enum CommentVote {
+  Dislike = 1,
+  Like = 2,
+}
+
+export interface ProfileShort {
+  id: number;
+  login: string;
+  avatar: string | null;
+  is_banned: boolean;
+  is_online: boolean;
+  is_verified: boolean;
+  is_sponsor: boolean;
+}
+
+export interface ReleaseComment {
+  id: number;
+  message: string;
+  timestamp: number;
+  type: number;
+  vote: number;
+  profile: ProfileShort;
+  parent_comment_id: number;
+  vote_count: number;
+  likes_count: number;
+  is_spoiler: boolean;
+  is_edited: boolean;
+  is_deleted: boolean;
+  is_reply: boolean;
+  reply_count: number;
+  can_like: boolean;
+}
+
+export interface CommentPagedResponse {
+  code: number;
+  content: ReleaseComment[];
+  current_page: number;
+  total_count: number;
+  total_page_count: number;
 }

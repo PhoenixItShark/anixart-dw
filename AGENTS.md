@@ -31,6 +31,7 @@
 - Все запросы кроме auth: `?token=<session_token>` (apiKey в query). Клиент `shared/api/client.ts` сам подставляет токен из localStorage `user-storage` (fallback — `VITE_TOKEN` из .env).
 - Заголовок `User-Agent: AnixartApp/9.0 BETA 9-25110702 (Android 16; ...)` ставится клиентом автоматически.
 - Ключевые эндпоинты: `/filter/{page}` (POST, тело-фильтр, `extended_mode`), `/release/{id}?extended_mode`, `/episode/{id}`, `/discover/*`, `/notification/count`, `/profile/{id}`, `/profile/info`, `/config/{urls,toggles}`, `/search/releases/{page}` (POST, v2).
+- Действия: `/profile/list/add|delete/{list}/{id}` (list: 1=Смотрю,2=В планах,3=Просмотрено,4=Отложено,5=Брошено), `/favorite/add|delete/{id}`, `/release/vote/add|delete/{id}/{vote}` (vote 1..5), `/related/{id}/{page}` — ВАЖНО: id = **франшизы** (поле `release.related.id`), НЕ релиза; пагинация с **0** (page=0 → 25 шт., по 25 на страницу); header `Api-Version: v2`; `total_count` = все релизы франшизы (у релиза: `related_count`, `related_releases` — превью 3), `/release/comment/all/{id}/{page}?sort=1..3` (1=новые,2=старые,3=популярные), `/release/comment/replies/{id}/{page}`, `/release/comment/add/{id}` (POST `{parentCommentId, replyToProfileId, message, isSpoiler}` — ВАЖНО: поле в теле называется `isSpoiler` (camelCase), не `spoiler`; неверное поле → `{code:1}` UnexpectedError), `/release/comment/vote/{id}/{vote}` (1=dislike, 2=like; повторный клик = снятие голоса). Комментарии/ответы: 25 на страницу, корневые идут из `/all`, ответы — плоский список через `/replies` (2 уровня дерева в UI).
 - Ответ `/release/{id}`: `{code, release: AnimeItem}` — содержит poster/image, названия (ru/alt/original), description, genres (строка), status/category, rating/grade + голоса 1..5, counts (watching/favorites/comments...), screenshots/screenshot_images, related_releases/recommended_releases, video_banners, episode_last_update, age_rating (1..5 → 0+..18+), duration, season, broadcast, dates (aired_on_date, release_date).
 - CORS на API открыт полностью (Allow-Origin: *).
 - Полная OpenAPI-спека: https://openanix.ru/anixart-api-docs/openapi.yaml
@@ -41,8 +42,9 @@
 ## Текущее состояние
 - Вход по логину/паролю работает, сессия живёт в userStore (persist). ProtectedRoute пускает только авторизованных, `/auth` — отдельная страница без лейаута.
 - Вкладки в топбаре синхронизированы с URL (управляемый Tabs).
-- Страница релиза `/release/{id}` — полная (hero, описание, инфо, кадры, похожие).
-- НЕ реализовано: плеер эпизодов, поиск, профиль `/profile`, уведомления, коллекции, голосование/отметки, вход по токену из Charles (нужен id из URL `/profile/{id}`).
+- Страница релиза `/release/{id}`: hero (панель рейтинга: grade + бары 5→1 + звёзды), статус просмотра (дропдаун), избранное, поделиться, описание, серии, кадры (5 + «Показать все»), сайдбар sticky (до «Похожих»: инфо, жанры, «В списках у людей», счётчики), связанные релизы (превью-список + модалка «Показать все» через `/related` v2), похожие (слайдер со стрелками), комментарии (монолитный форум: сортировка, спойлер по клику, +1/-1, дерево ответов — 2 показаны, остальные раскрываются).
+- Мутации через react-query, после действия — `invalidateQueries(["release", id])` (счётчики/статусы обновляются без перезагрузки).
+- НЕ реализовано: плеер эпизодов, поиск, профиль `/profile`, уведомления, коллекции, вход по токену из Charles (нужен id из URL `/profile/{id}`).
 
 ## Советы
 - Не нарушать FSD-слои — линт это блокирует.
