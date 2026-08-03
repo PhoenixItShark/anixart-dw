@@ -1,79 +1,42 @@
 import { BookMarked, Compass, House, UserCircle2 } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+
+const NAV = [
+  { to: '/', icon: House, label: 'Главная' },
+  { to: '/discover', icon: Compass, label: 'Обзор' },
+  { to: '/marks', icon: BookMarked, label: 'Закладки' },
+  { to: '/profile', icon: UserCircle2, label: 'Профиль' },
+]
 
 const SideBarNav = () => {
   return (
     <ul className='flex flex-col gap-10 items-center h-full mt-6'>
-        <li className='p-2'>
-          <Link to={"/"} className='group flex flex-col items-center justify-center'>
-            <House className="text-text-primary group-hover:text-text-secondary transition duration-150 hover:text-red" width={32} height={32} />
-            <span
-              className='
-  text-text-secondary mt-3 font-medium
-  opacity-0 invisible
-  group-hover:opacity-100 group-hover:visible
-  transition-all  duration-100 ease-in-out
-'
-            >
-              Главная
-            </span>
-          </Link>
+      {NAV.map(({ to, icon: Icon, label }) => (
+        <li key={to} className='p-2'>
+          <NavLink to={to} className='group flex flex-col items-center justify-center'>
+            {({ isActive }) => (
+              <>
+                <Icon
+                  className={`transition duration-150 ${
+                    isActive ? 'text-red' : 'text-text-primary group-hover:text-text-secondary'
+                  }`}
+                  width={32}
+                  height={32}
+                />
+                <span
+                  className={`
+                    mt-3 font-medium transition-all duration-100 ease-in-out
+                    ${isActive ? 'text-red opacity-100 visible' : 'text-text-secondary opacity-0 invisible group-hover:opacity-100 group-hover:visible'}
+                  `}
+                >
+                  {label}
+                </span>
+              </>
+            )}
+          </NavLink>
         </li>
-        <li className='p-2'>
-          <Link
-            to={"/discover"}
-            className='flex flex-col items-center justify-center'
-          >
-            <Compass  className="text-text-primary group-hover:text-text-secondary transition duration-150 hover:text-red" width={32} height={32} />
-            <span
-              className='
-  text-text-secondary mt-3 font-medium
-  opacity-0 invisible
-  group-hover:opacity-100 group-hover:visible
-  transition-all  duration-100 ease-in-out
-'
-            >
-              Обзор
-            </span>
-          </Link>
-        </li>
-        <li className='p-2'>
-          <Link
-            to={"/marks"}
-            className='flex flex-col items-center justify-center'
-          >
-            <BookMarked  className="text-text-primary group-hover:text-text-secondary transition duration-150 hover:text-red" width={32} height={32} />
-            <span
-              className='
-  text-text-secondary mt-3 font-medium
-  opacity-0 invisible
-  group-hover:opacity-100 group-hover:visible
-  transition-all  duration-100 ease-in-out
-'
-            >
-              Закладки
-            </span>
-          </Link>
-        </li>
-        <li className='p-2'>
-          <Link
-            to={"/profile"}
-            className='flex flex-col items-center justify-center'
-          >
-            <UserCircle2  className="text-text-primary group-hover:text-text-secondary transition duration-150 hover:text-red" width={32} height={32} />
-            <span
-              className='
-  text-text-secondary mt-3 font-medium
-  opacity-0 invisible
-  group-hover:opacity-100 group-hover:visible
-  transition-all  duration-100 ease-in-out
-'
-            >
-              Профиль
-            </span>
-          </Link>
-        </li>
-      </ul>
+      ))}
+    </ul>
   )
 }
 
