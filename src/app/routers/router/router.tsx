@@ -14,6 +14,10 @@ import RootLayout from "@app/layouts/RootLayout";
 
 const router = createBrowserRouter([
   {
+    path: "/auth",
+    element: <Auth />,
+  },
+  {
     path: "/",
     element: <RootLayout />,
     children: [
@@ -22,17 +26,11 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Home /> },
           { path: "release/:id", element: <ReleasePage /> },
-          { path: "/ongoings", element: <Ongoings /> },
-          { path: "/announcements", element: <Announcements /> },
-          { path: "/completed", element: <Completed /> },
-          { path: "/movies", element: <Movies /> },
-          // {path: }
-          // другие защищённые роуты
+          { path: "ongoings", element: <Ongoings /> },
+          { path: "announcements", element: <Announcements /> },
+          { path: "completed", element: <Completed /> },
+          { path: "movies", element: <Movies /> },
         ],
-      },
-      {
-        path: "auth",
-        element: <Auth />,
       },
       {
         path: "*",
