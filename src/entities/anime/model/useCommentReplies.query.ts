@@ -10,7 +10,7 @@ export const useCommentReplies = (
   return useInfiniteQuery({
     queryKey: ["commentReplies", commentId, sort],
     queryFn: ({ pageParam }) => getCommentReplies(commentId, pageParam, sort),
-    initialPageParam: 1,
+    initialPageParam: 0,
     getNextPageParam: (lastPage) =>
       lastPage.current_page < lastPage.total_page_count
         ? lastPage.current_page + 1

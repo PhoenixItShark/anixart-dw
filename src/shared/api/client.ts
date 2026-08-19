@@ -1,6 +1,11 @@
 import axios from "axios";
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+// В dev мутации идут через Vite-прокси (он подменяет User-Agent на AnixartApp —
+// иначе сервер отвечает 402 на POST/лайки). В prod — прямой URL,
+// там UA должен подменять nginx/бэкенд-прокси.
+const BASE_URL = import.meta.env.DEV
+  ? "/api"
+  : import.meta.env.VITE_BASE_URL;
 
 const USER_AGENT =
   import.meta.env.VITE_USER_AGENT ||

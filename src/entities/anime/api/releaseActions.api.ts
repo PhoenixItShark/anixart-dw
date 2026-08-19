@@ -116,7 +116,7 @@ export const addReleaseComment = async (
     parentCommentId?: number | null;
     replyToProfileId?: number | null;
     message: string;
-    isSpoiler: boolean;
+    spoiler: boolean;
   }
 ): Promise<DefaultResponse> => {
   const res = await apiClient.post(`${API_URLS.comment}/add/${releaseId}`, body);

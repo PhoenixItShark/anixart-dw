@@ -32,6 +32,8 @@ const SORTS: { id: CommentSort; label: string }[] = [
   { id: CommentSort.Popular, label: "Популярные" },
 ];
 
+const MIN_COMMENT_LENGTH = 5;
+
 const plural = (n: number, one: string, few: string, many: string) => {
   const mod10 = n % 10;
   const mod100 = n % 100;
@@ -51,6 +53,8 @@ const commentErrorText = (error: unknown): string => {
       return "Аккаунт заблокирован навсегда";
     case 1:
       return "Серверная ошибка, попробуйте позже";
+    case 5:
+      return "Комментарий слишком короткий — минимум 5 символов";
     default:
       return "Не удалось выполнить действие";
   }
@@ -213,9 +217,15 @@ const CommentNode = ({
   const [replyText, setReplyText] = useState("");
   const [replySpoiler, setReplySpoiler] = useState(false);
   const [voteError, setVoteError] = useState<string | null>(null);
+  const [replyError, setReplyError] = useState<string | null>(null);
 
   const addComment = useAddComment(releaseId);
   const voteMutation = useCommentVote(releaseId, comment.id);
+
+  const showError = (setter: (v: string | null) => void, message: string) => {
+    setter(message);
+    setTimeout(() => setter(null), 4000);
+  };
 
   const handleVote = (vote: CommentVote) => {
     if (!isAuthenticated) {
@@ -225,15 +235,24 @@ const CommentNode = ({
     setVoteError(null);
     voteMutation.mutate(vote, {
       onError: (error) => {
-        setVoteError(commentErrorText(error));
-        setTimeout(() => setVoteError(null), 4000);
+        showError(setVoteError, commentErrorText(error));
       },
     });
   };
 
   const submitReply = () => {
     const message = replyText.trim();
-    if (!message) return;
+    if (!message) {
+      showError(setReplyError, "Комментарий не может быть пустым");
+      return;
+    }
+    if (message.length < MIN_COMMENT_LENGTH) {
+      showError(
+        setReplyError,
+        `Комментарий слишком короткий — минимум ${MIN_COMMENT_LENGTH} символов`
+      );
+      return;
+    }
     addComment.mutate(
       {
         message,
@@ -391,6 +410,7 @@ const CommentNode = ({
                 {addComment.isError && (
                   <span className="text-xs text-red">{commentErrorText(addComment.error)}</span>
                 )}
+                {replyError && <span className="text-xs text-red">{replyError}</span>}
               </>
             )}
           </div>
@@ -419,6 +439,7 @@ const ReleaseComments = ({ releaseId }: { releaseId: string }) => {
   const [text, setText] = useState("");
   const [spoiler, setSpoiler] = useState(false);
   const [sentNotice, setSentNotice] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useReleaseComments(releaseId, sort);
@@ -428,7 +449,18 @@ const ReleaseComments = ({ releaseId }: { releaseId: string }) => {
 
   const submit = () => {
     const message = text.trim();
-    if (!message) return;
+    if (!message) {
+      setFormError("Комментарий не может быть пустым");
+      setTimeout(() => setFormError(null), 4000);
+      return;
+    }
+    if (message.length < MIN_COMMENT_LENGTH) {
+      setFormError(
+        `Комментарий слишком короткий — минимум ${MIN_COMMENT_LENGTH} символов`
+      );
+      setTimeout(() => setFormError(null), 4000);
+      return;
+    }
     addComment.mutate(
       { message, spoiler },
       {
@@ -511,6 +543,7 @@ const ReleaseComments = ({ releaseId }: { releaseId: string }) => {
             {addComment.isError && (
               <span className="text-xs text-red">{commentErrorText(addComment.error)}</span>
             )}
+            {formError && <span className="text-xs text-red">{formError}</span>}
             {sentNotice && (
               <span className="text-xs text-green-500">
                 Комментарий отправлен

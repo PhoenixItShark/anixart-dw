@@ -15,7 +15,7 @@ export const useAddComment = (releaseId: string) => {
     mutationFn: ({ message, spoiler, parentCommentId, replyToProfileId }: AddCommentPayload) =>
       addReleaseComment(releaseId, {
         message,
-        isSpoiler: spoiler ?? false,
+        spoiler: spoiler ?? false,
         parentCommentId: parentCommentId ?? null,
         replyToProfileId: replyToProfileId ?? null,
       }),
